@@ -12,14 +12,22 @@ import {
 import { HiOutlineSearch } from 'react-icons/hi';
 import Cart from '../components/Cart';
 import logo from '../assets/images/technet-logo.png';
+import { useAppSelector } from '@/redux/store';
 
 export default function Navbar() {
+  const { user } = useAppSelector((state) => state.user);
+  const handleLogout = ()=>{
+    console.log('s');
+    
+  }
   return (
     <nav className="w-full h-16 fixed top backdrop-blur-lg z-10">
       <div className="h-full w-full bg-white/60">
         <div className="flex items-center justify-between w-full md:max-w-7xl h-full mx-auto ">
           <div>
-            <img className="h-8" src={logo} alt="log" />
+            <Link to="/">
+              <img className="h-8" src={logo} alt="log" />
+            </Link>
           </div>
           <div>
             <ul className="flex items-center">
@@ -63,12 +71,27 @@ export default function Navbar() {
                     <DropdownMenuItem className="cursor-pointer">
                       Billing
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      Team
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
-                      Subscription
-                    </DropdownMenuItem>
+                    {!user.email && (
+                      <>
+                        <Link to="/login">
+                          <DropdownMenuItem className="cursor-pointer">
+                            login
+                          </DropdownMenuItem>
+                        </Link>
+                        <Link to="/signup">
+                          <DropdownMenuItem className="cursor-pointer">
+                            sign up
+                          </DropdownMenuItem>
+                        </Link>
+                      </>
+                    )}
+                    {user.email && (
+                      <>
+                          <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
+                            logout
+                          </DropdownMenuItem>
+                      </>
+                    )}
                   </DropdownMenuContent>
                 </DropdownMenu>
               </li>
